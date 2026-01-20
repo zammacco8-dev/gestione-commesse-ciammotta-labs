@@ -268,6 +268,8 @@
             <option value="done">Solo FINITA</option>
           </select>
           <button class="btn" id="btnExport" type="button">Export JSON</button>
+          <button class="btn" id="btnImport" type="button">Import</button>
+          <input id="importFile" type="file" accept="application/json" style="display:none" />
           <button class="btn bad" id="btnDangerWipe" type="button">Svuota</button>
         </div>
         <div class="jobs" id="jobs"></div>
@@ -827,6 +829,10 @@ function saveJobs(jobs){ localStorage.setItem(LS_JOBS, JSON.stringify(jobs)); }
 
 function baseURL(){
   // current page without hash
+  // NOTE: if you run the app as a local file (file://), the full path can be very long
+  // and may prevent QR generation in some QR libraries. In that case we fallback to
+  // a short relative URL so the QR is still generated.
+  if(location.protocol === 'file:') return 'index.html';
   return location.href.split('#')[0];
 }
 function jobLink(id){
